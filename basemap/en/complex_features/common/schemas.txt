@@ -1,6 +1,0 @@
-Importing source and target schemas
------------------------------------
-
-Schemas define the structure of the data both concretely (e.g. XML schema, database schema) and conceptually (description in terms of classes/types, properties and relations, e.g. UML). HALE's main job is to abstract a conceptual schema from a concrete schema and to assist the user in mapping concepts from a source schema to a target schema.
-
-In this training, source schemas will be inferred from a PostGIS database, while target schemas will be extracted from XSD files.

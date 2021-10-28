@@ -1,1 +1,0 @@
-To do so, we leverage a feature of HALE called **instance context**: an instance context can be defined on properties that may occur multiple times and represents an additional property instance that a mapping can use as a target, thus allowing the same target property to be populated from the source in different ways.

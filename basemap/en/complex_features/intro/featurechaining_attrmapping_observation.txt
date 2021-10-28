@@ -1,8 +1,0 @@
-.. code-block:: xml
-
-  <AttributeMapping>
-    <targetAttribute>FEATURE_LINK</targetAttribute>
-    <sourceExpression>
-      <OCQL>station_id</OCQL>
-    </sourceExpression>
-  </AttributeMapping>

@@ -1,7 +1,0 @@
-Including target schema
-+++++++++++++++++++++++
-
-The next wizard screen is very simple, as it poses a simple question:
-
-.. figure:: ../common/img/hale_include_target_schema.png
-   :align: center

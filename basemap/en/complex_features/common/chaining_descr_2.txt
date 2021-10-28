@@ -1,6 +1,0 @@
-The table is composed of four columns:
-
-* **Source Type**: the name of the source type we are chaining / joining.
-* **Role**: specifies whether the source type should be nested into the other, or viceversa. The role is determined from the join order and cannot be modified: the *join type* in the condition has always the *NESTED* role, while the *base type* has always the *CONTAINER* role.
-* **Join Property**: the property that is checked for equality.
-* **Target Type**: the source type will be mapped to this type, i.e. a `feature type mapping <http://docs.geoserver.org/latest/en/user/data/app-schema/mapping-file.html#typemappings-and-featuretypemapping>`_ for it will be created in the App-Schema configuration.

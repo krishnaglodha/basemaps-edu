@@ -1,7 +1,0 @@
-.. code-block:: xml
-
-  <targetTypes>
-    <FeatureType>
-      <schemaUri>http://www.example.com/stations.xsd</schemaUri>
-    </FeatureType>
-  </targetTypes>

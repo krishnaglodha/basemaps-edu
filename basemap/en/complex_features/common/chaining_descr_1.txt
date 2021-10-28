@@ -1,1 +1,0 @@
-The upper part of the dialog contains a read-only table displaying the current configuration, while the bottom part contains a schema explorer view, showing all the properties of the target type of the whole *Join* relation, and, further down, a checkbox.

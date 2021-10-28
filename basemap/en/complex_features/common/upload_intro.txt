@@ -1,3 +1,0 @@
-The alignment has now been defined and can be exported to a GeoServer App-Schema configuration, thanks to the App-Schema plugin for HALE developed by `GeoSolutions <http://www.geo-solutions.it>`_.
-
-To start the **Export Alignment** wizard, select **File** |rarr| **Export** |rarr| **Alignment...** from the menu bar on top.
