@@ -1,0 +1,21 @@
+.. code-block:: xml
+
+  <st:Observation gml:id="observation.1">
+    ...
+    <st:parameter>
+      <st:Parameter gml:id="parameter.1">
+        ...
+      </st:Parameter>
+    </st:parameter>
+
+  </st:Observation>
+  ...
+  <st:Observation gml:id="observation.2">
+    ...
+    <st:parameter>
+      <st:Parameter gml:id="parameter.2">
+        ...
+      </st:Parameter>
+    </st:parameter>
+
+  </st:Observation>

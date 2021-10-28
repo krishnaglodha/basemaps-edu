@@ -1,0 +1,1 @@
+.. note:: In HALE, multiple join conditions can be specified for each source type, whereas the GeoServer App-Schema extension only supports single-condition joins; thus, in order to be translateable to a GeoServer App-Schema configuration, an alignment should not contain more than one join condition for the same source type.

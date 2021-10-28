@@ -1,0 +1,12 @@
+version: '3'
+services:
+  database:
+    image: postgres:13.4
+    ports: 
+      - 7890:5432
+    environment:
+      POSTGRES_PASSWORD: examplePassword
+  web:
+    image: nginx
+    ports:
+      - 8080:80

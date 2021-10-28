@@ -1,0 +1,22 @@
+.. code-block:: xml
+
+  <element name="FooObject" type="FooObjectType"
+    substitutionGroup=”gml:AbstractGML” />
+
+  <complexType name="FooObjectType">
+    <complexContent>
+      <extension base="gml:AbstractGMLType">
+      ...
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="FooProperty" type="FooPropertyType" />
+
+  <complexType name="FooPropertyType">
+    <sequence minOccurs="0">
+      <element ref="FooObject"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    ...
+  </complexType>

@@ -1,0 +1,83 @@
+.. code-block:: xml
+
+  <wfs:FeatureCollection
+      xmlns:wfs="http://www.opengis.net/wfs/2.0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:st="http://www.stations.org/1.0"
+      xmlns:gml="http://www.opengis.net/gml/3.2"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" numberMatched="unknown" numberReturned="1" timeStamp="2020-05-27T16:06:03.560Z" xsi:schemaLocation="http://www.opengis.net/wfs/2.0 http://localhost:8083/geoserver/schemas/wfs/2.0/wfs.xsd http://www.stations.org/1.0 http://localhost:8083/geoserver/www/meteo/meteo.xsd http://www.opengis.net/gml/3.2 http://localhost:8083/geoserver/schemas/gml/3.2.1/gml.xsd">
+    <wfs:member>
+      <st:Station gml:id="station.7">
+        <st:stationCode>BOL</st:stationCode>
+        <st:stationName>Bologna</st:stationName>
+        <st:observation>
+          <st:Observation gml:id="observation.3">
+            <st:timestamp>2016-12-19T12:28:31Z</st:timestamp>
+            <st:value>35.0</st:value>
+            <st:parameter>
+              <st:Parameter gml:id="parameter.1">
+                <st:parameter>temperature</st:parameter>
+                <st:unit>C</st:unit>
+              </st:Parameter>
+            </st:parameter>
+          </st:Observation>
+        </st:observation>
+        <st:observation>
+          <st:Observation gml:id="observation.4">
+            <st:timestamp>2016-12-19T12:28:55Z</st:timestamp>
+            <st:value>25.0</st:value>
+            <st:parameter>
+              <st:Parameter gml:id="parameter.1">
+                <st:parameter>temperature</st:parameter>
+                <st:unit>C</st:unit>
+              </st:Parameter>
+            </st:parameter>
+          </st:Observation>
+        </st:observation>
+        <st:observation>
+          <st:Observation gml:id="observation.5">
+            <st:timestamp>2016-12-19T12:29:24Z</st:timestamp>
+            <st:value>80.0</st:value>
+            <st:parameter>
+              <st:Parameter gml:id="parameter.2">
+                <st:parameter>wind speed</st:parameter>
+                <st:unit>Km/h</st:unit>
+              </st:Parameter>
+            </st:parameter>
+          </st:Observation>
+        </st:observation>
+        <st:observation>
+          <st:Observation gml:id="observation.6">
+            <st:timestamp>2016-12-19T12:30:26Z</st:timestamp>
+            <st:value>1019.0</st:value>
+            <st:parameter>
+              <st:Parameter gml:id="parameter.3">
+                <st:parameter>pressure</st:parameter>
+                <st:unit>hPa</st:unit>
+              </st:Parameter>
+            </st:parameter>
+          </st:Observation>
+        </st:observation>
+        <st:observation>
+          <st:Observation gml:id="observation.7">
+            <st:timestamp>2016-12-19T12:30:51Z</st:timestamp>
+            <st:value>1015.0</st:value>
+            <st:parameter>
+              <st:Parameter gml:id="parameter.3">
+                <st:parameter>pressure</st:parameter>
+                <st:unit>hPa</st:unit>
+              </st:Parameter>
+            </st:parameter>
+          </st:Observation>
+        </st:observation>
+        <st:contactMail>station1@stations1.org</st:contactMail>
+        <st:contactMail>info@station1.org</st:contactMail>
+        <st:position>
+          <gml:Point srsName="http://www.opengis.net/gml/srs/epsg.xml#404000">
+            <gml:pos>11.34 44.5</gml:pos>
+          </gml:Point>
+        </st:position>
+      </st:Station>
+    </wfs:member>
+  </wfs:FeatureCollection>

@@ -1,0 +1,17 @@
+.. code-block:: xml
+
+  ...
+  <wfs:member>
+    <st:Station gml:id="station.st.1">
+      <st:name>station1</st:name>
+      <st:location>
+        <st:name>Europe</st:name>
+        <st:position>
+          <gml:Point srsDimension="2" srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+            <gml:pos>1 -1</gml:pos>
+          </gml:Point>
+        </st:position>
+      </st:location>
+    </st:Station>
+  </wfs:member>
+  ...

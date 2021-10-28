@@ -1,0 +1,26 @@
+.. code-block:: xml
+
+  <st:stations gml:id="stations.13">
+    <st:id>13</st:id>
+    <st:code>ALS</st:code>
+    <st:common_name>Alessandria</st:common_name>
+    <st:position>
+      <gml:Point srsName="urn:ogc:def:crs:EPSG::4326"
+        srsDimension="2">
+        <gml:pos>44.92 8.63</gml:pos>
+      </gml:Point>
+    </st:position>
+  </st:stations>
+  ...
+  <st:stations gml:id="stations.7">
+    <st:id>7</st:id>
+    <st:code>BOL</st:code>
+    <st:common_name>Bologna</st:common_name>
+    <st:position>
+      <gml:Point srsName="urn:ogc:def:crs:EPSG::4326"
+        srsDimension="2">
+        <gml:pos>44.5 11.34</gml:pos>
+      </gml:Point>
+    </st:position>
+  </st:stations>
+  ...

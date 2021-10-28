@@ -1,0 +1,3 @@
+This option may be useful when GeoServer is running on a server with no internet connectivity and is thus unable to download the required schemas from the web. However, in general it should be left unchecked, to maximize schema reuse among App-Schema datastores via `GeoServer's centralized App-Schema cache <http://docs.geoserver.org/latest/en/user/data/app-schema/app-schema-resolution.html#cache>`_.
+
+Leave the option unchecked, and click **Next**.

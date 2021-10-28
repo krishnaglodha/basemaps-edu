@@ -1,0 +1,19 @@
+.. code-block:: xml
+
+  <wfs:FeatureCollection xmlns:wfs="http://www.opengis.net/wfs/2.0"
+    xmlns:st="http://www.stations.org/1.0"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    numberMatched="unknown" numberReturned="1"
+    timeStamp="2017-08-26T06:17:58.830Z">
+    <wfs:member>
+      <st:Station gml:id="station.21">
+        <st:stationCode>ROV</st:stationCode>
+        <st:stationName>Rovereto</st:stationName>
+        <st:position>
+          <gml:Point srsName="urn:ogc:def:crs:EPSG::4326">
+            <gml:pos>11.05 45.89</gml:pos>
+          </gml:Point>
+        </st:position>
+      </st:Station>
+    </wfs:member>
+  </wfs:FeatureCollection>

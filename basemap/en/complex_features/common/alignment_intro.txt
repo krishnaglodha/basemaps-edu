@@ -1,0 +1,10 @@
+Once source and target schemas have been imported, it is time to define what HALE calls an **alignment**, i.e. a mapping between source and target schemas. An alignment defines relations between source and target entities (types or properties). First, relations between types must be established, and then relations between properties can be defined. Each relation is described by a function and it is visually represented in the alignment view by a mapping cell.
+
+In the following example, the type *t1* from the source schema is mapped to the type *person* in the target schema. The relation is represented by the *Retype* function
+
+.. figure:: ../common/img/hale_type_cell.png
+   :align: center
+
+   *Creates a person instance for each t1 instance in the source data set*
+
+For more information on alignments, please read the relevant section in the *HALE User Guide*, accessible from the **Help** menu.   

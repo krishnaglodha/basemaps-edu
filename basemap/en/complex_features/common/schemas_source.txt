@@ -1,0 +1,33 @@
+Importing the source schema
++++++++++++++++++++++++++++
+
+To import the source schema, follow these steps:
+
+1. Make sure the PostgreSQL server is running. 
+    .. note:: If it's not running, start it by double clicking on the **start_postgis.bat** batch script (windows) or type in the terminal `sudo service postgresql start` (linux).
+2. Select **File** |rarr| **Import** |rarr| **Source schema...** from the menu bar on top.
+3. A wizard will open. On the first page of the wizard, click on the **From Database (JDBC)** tab and populate the form fields as shown in the figure below.
+
+  * Host(:Port): localhost:5434
+  * Database: hale_tutorial
+  
+  .. figure:: ../common/img/hale_import_schema_jdbc.png
+
+4. The next page will ask you for credentials to access the database. Enter `hale_tutorial` as both *User* and *Password*.
+
+  * User:     hale_tutorial
+  * Password: hale_tutorial
+
+  .. figure:: ../common/img/hale_import_schema_auth.png
+
+5. After the schema has been imported, the **Schema Explorer** view should look like the figure below:
+  
+  .. figure:: ../common/img/hale_import_schema_explorer.png
+
+  Note that HALE created a new type for each table in the database.
+
+6. Not all source types are relevant for the mapping we want to create. Select **Edit** |rarr| **Edit mapping relevant source types** from the menu bar and uncheck the irrelevant types, as shown in the figure below.
+
+   |source_rel|
+
+7. Click finish, and now the *Source* section in the *Schema Explorer* view should show only the selected types.

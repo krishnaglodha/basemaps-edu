@@ -1,0 +1,19 @@
+.. code-block:: xml
+
+  ...
+  <st:Station gml:id="station.13">
+    <st:stationCode>ALS</st:stationCode>
+    <st:stationName>Alessandria</st:stationName>
+    <st:observation>
+      <null:Observation gml:id="observation.1">
+        <null:timestamp>2016-12-19T11:26:40Z</st:timestamp>
+        <null:value>20.0</st:value>
+        <null:parameter>
+          <pr:Parameter gml:id="parameter.1">
+            <pr:parameter>temperature</st:parameter>
+            <pr:unit>C</st:unit>
+          </pr:Parameter>
+        </null:parameter>
+      </null:Observation>
+    </st:observation>
+  ...

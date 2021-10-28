@@ -1,0 +1,11 @@
+.. code-block:: xml
+
+  ...
+  <FeatureTypeMapping>
+    <sourceDataStore>stations</sourceDataStore>
+    <sourceType>stations</sourceType>
+    <targetElement>st:Station</targetElement>
+    <defaultGeometry>st:location/st:position</defaultGeometry>
+    <attributeMappings>
+        <AttributeMapping>
+  ...

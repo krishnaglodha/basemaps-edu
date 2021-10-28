@@ -1,0 +1,17 @@
+.. code-block:: xml
+
+  <st:Station gml:id="station.13">
+    ...
+    <st:observation>
+      <st:Observation gml:id="observation.1">
+        ...
+      </st:Observation>
+    </st:observation>
+
+    <st:observation>
+      <st:Observation gml:id="observation.2">
+        ...
+      </st:Observation>
+    </st:observation>
+    ...
+  </st:Station>

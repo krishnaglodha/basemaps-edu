@@ -1,0 +1,8 @@
+.. code-block:: xml
+
+  <AttributeMapping>
+    <targetAttribute>FEATURE_LINK</targetAttribute>
+    <sourceExpression>
+      <OCQL>id</OCQL>
+    </sourceExpression>
+  </AttributeMapping>

@@ -1,0 +1,8 @@
+"PointPropertyType","Point"
+"CurvePropertyType","LineString
+Curve"
+"SurfacePropertyType","Polygon
+Surface"
+"MultiPointPropertyType","MultiPoint"
+"MultiCurvePropertyType","MultiCurve"
+"MultiSurfacePropertyType","MultiSurface"

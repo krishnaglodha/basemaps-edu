@@ -1,0 +1,10 @@
+.. code-block:: xml
+
+  <AttributeMapping>
+    <targetAttribute>st:parameter</targetAttribute>
+    <sourceExpression>
+      <OCQL>parameter_id</OCQL>
+      <linkElement>st:Parameter</linkElement>
+      <linkField>FEATURE_LINK</linkField>
+    </sourceExpression>
+  </AttributeMapping>

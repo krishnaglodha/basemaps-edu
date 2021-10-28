@@ -1,0 +1,22 @@
+Importing the target schema
++++++++++++++++++++++++++++
+
+To import the target schema, follow these steps:
+
+#. Select **File** |rarr| **Import** |rarr| **Target schema...** from the menu bar on top.
+#. A wizard will open. On the first page of the wizard, click on the **From URL** tab, copy the URL |schema_url| in the *Source URL* field and click on the **Detect** button.
+#. The *Content type* option should display **XML schema**. Click on the **Finish** button.
+
+   |import_schema_url|
+
+   .. note:: This step requires internet connectivity.
+
+#. After the schema has been imported, the **Schema Explorer** view should look like the figure below.
+
+   |import_schema_expl|
+
+#. Not all target types are relevant for the mapping we want to create. Select **Edit** |rarr| **Edit mapping relevant target types** from the menu bar and uncheck the irrelevant types, as shown in the figure below.
+
+   |target_rel|
+
+#. Click finish, and now the *Target* section in the *Schema Explorer* view should show only the selected types.

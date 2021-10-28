@@ -1,0 +1,49 @@
+.. code-block:: xml
+
+  <sourceDataStores>
+    <DataStore>
+      <id>postgis-ds</id>
+      <parameters>
+        <Parameter>
+          <name>dbtype</name>
+          <value>postgis</value>
+        </Parameter>
+        <Parameter>
+          <name>host</name>
+          <value>localhost</value>
+        </Parameter>
+        <Parameter>
+          <name>port</name>
+          <value>5432</value>
+        </Parameter>
+        <Parameter>
+          <name>database</name>
+          <value>appschema</value>
+        </Parameter>
+        <Parameter>
+          <name>schema</name>
+          <value>educational</value>
+        </Parameter>
+        <Parameter>
+          <name>user</name>
+          <value>appschema</value>
+        </Parameter>
+        <Parameter>
+          <name>passwd</name>
+          <value>appschema</value>
+        </Parameter>
+        <Parameter>
+          <name>Connection timeout</name>
+          <value>20</value>
+        </Parameter>
+        <Parameter>
+          <name>Loose bbox</name>
+          <value>true</value>
+        </Parameter>
+        <Parameter>
+          <name>Expose primary keys</name>
+          <value>true</value>
+        </Parameter>
+      </parameters>
+    </DataStore>
+  </sourceDataStores>

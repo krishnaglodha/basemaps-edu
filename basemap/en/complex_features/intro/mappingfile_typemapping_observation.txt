@@ -1,0 +1,21 @@
+.. code-block:: xml
+
+  <FeatureTypeMapping>
+    <sourceDataStore>postgis-ds</sourceDataStore>
+    <sourceType>observations</sourceType>
+    <targetElement>st:Observation</targetElement>
+    <attributeMappings>
+      <AttributeMapping>
+        <targetAttribute>st:timestamp</targetAttribute>
+        <sourceExpression>
+          <OCQL>time</OCQL>
+        </sourceExpression>
+      </AttributeMapping>
+      <AttributeMapping>
+        <targetAttribute>st:value</targetAttribute>
+        <sourceExpression>
+          <OCQL>value</OCQL>
+        </sourceExpression>
+      </AttributeMapping>
+    </attributeMappings>
+  </FeatureTypeMapping>
