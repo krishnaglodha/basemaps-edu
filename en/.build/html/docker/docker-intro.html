@@ -1,0 +1,188 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Introduction to Docker &#8212; Basemap Training</title>
+    <link rel="stylesheet" href="../_static/geosolutions.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Creating Dockerfile" href="create-dockerfile.html" />
+    <link rel="prev" title="Introduction to docker and docker-compose" href="index.html" />
+    
+
+  </head><body>
+    <div class="header">
+        <div class="wrap">
+			
+            <div class="logo">
+			<a href="http://www.geosolutionsgroup.com/"><img src="../_static/img/geosolutions.png" alt="GeoSolutions" /></a>
+			<div class="social-container"> 
+				<ul id="social">
+					<li><a href="https://twitter.com/geosolutions_it/" id="twitter">Twitter</a></li>
+				</ul>
+			</div>
+			</div>
+					
+            <h2 class="docstitle"><a href="../index.html">Basemap Training</a></h2>
+			
+        </div>
+    </div>
+
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction to Docker</a><ul>
+<li><a class="reference internal" href="#advantages-of-using-docker">advantages of using Docker</a></li>
+<li><a class="reference internal" href="#docker-components">Docker Components</a></li>
+<li><a class="reference internal" href="#install-docker">Install Docker</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Introduction to docker and docker-compose</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="create-dockerfile.html"
+                        title="next chapter">Creating Dockerfile</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/docker/docker-intro.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-basemap.docker-intro"></span><div class="section" id="introduction-to-docker">
+<span id="basemap-docker-intro"></span><h1>Introduction to Docker<a class="headerlink" href="#introduction-to-docker" title="Permalink to this headline">¶</a></h1>
+<p>Web development projects often times becomes complicated with the usage of several technologies, softwares used for various tasks, thus it becomes difficult over the period of time to share the projects and it’s requirements in order to make it workable locally at any system. The problem arises from Operating system level all the way down to libraries and their version numbers used for the project.</p>
+<p>Often times, VM is considered as one of the solutions which can be created for a project and shipped to wherever needed, but this strategy comes with it’s own flaws. VM machines are heavy and to run such VM, it is again dependant on the user’s operating system.</p>
+<p><strong>Containers</strong> are considered as solution to this problem.</p>
+<p>Containers has very light weight operating system of their own inside which applications can be deployed. Due to the size and speed of creating , shipping and installing containers, they are preferred over VMs. But of course there are few flaws in this as well. Example of which can be security. Since Containers are just a light weight replica of the OS, we need to be sure to install necessary packages on our own, which generally comes pre-installed while using VMs</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/docker.png"><img alt="../_images/docker.png" src="../_images/docker.png" style="width: 150.0px; height: 150.0px;" /></a>
+</div>
+<p><em>Docker logo</em></p>
+<p>Docker is an open source engine that helps us to create images, deploy it and reuse it without worrying about what baseline OS we have on our machine. Docker images usually have their own OS which are very lightweight ( Few MegaBytes in some cases) which makes it possible to run multiple such images parallel.</p>
+<div class="section" id="advantages-of-using-docker">
+<h2>advantages of using Docker<a class="headerlink" href="#advantages-of-using-docker" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Standardising Environment - Using Docker, Companies can make standard templates for the project which can be followed by Developers, Testers, etc. making sure that everyone can run the project smoothly. This saves a lot of time which goes into figuring out how to setup new machines</li>
+<li>Simplicity - Dockerfile contains series of simple commands based on YAML or JSON configuration, User needs to create such files and that’s all, there are no complicated steps involved</li>
+<li>Quicker Deployments - Since Docker Container created layers for each commands, it can leveraging caching mechanism which helps in faster image building and shipping</li>
+</ol>
+</div>
+<div class="section" id="docker-components">
+<h2>Docker Components<a class="headerlink" href="#docker-components" title="Permalink to this headline">¶</a></h2>
+<p>Docker ecosystem consists of following components</p>
+<ol class="arabic simple">
+<li>Docker Client</li>
+<li>Docker Daemon</li>
+<li>Docker Images</li>
+<li>Docker container</li>
+<li>Docker Hub</li>
+</ol>
+<p>General flow of docker component is as follows</p>
+<ul class="simple">
+<li>Docker Client is an installable piece of software which provides smooth UI to communicate with docker daemon (also known as docker server), which does all the work. Docker ships with the CLI which helps developers speed up the process of using docker via typing commands in terminal</li>
+</ul>
+<p>e.g. <em>docker pull geosolutionsit/geoserver</em></p>
+<ul class="simple">
+<li>Docker Daemon as mentioned does all the processes of pulling images from <a class="reference external" href="[https://hub.docker.com/](https://hub.docker.com/)">Docker Hub</a> , creating and maintaining containers, etc.</li>
+<li>Docker Images are considered as boiler plates or skeleton of the project. Each Major software has their own image hosted on <a class="reference external" href="[https://hub.docker.com/](https://hub.docker.com/)">Docker Hub</a>. e.g. PostgreSQL, Python, Geoserver,etc. we generally start new project by pulling such Image and then making changes on top of it</li>
+<li>Docker Containers are the images that we have pulled from <a class="reference external" href="[https://hub.docker.com/](https://hub.docker.com/)">Docker Hub</a> and then we make changes on them, generally we edit them according to our own project and then host it back to <a class="reference external" href="[https://hub.docker.com/](https://hub.docker.com/)">Docker Hub</a> using our own account. Once done other developers  can pull that image and work on it .</li>
+</ul>
+<div class="figure">
+<img alt="../_images/drun.png" src="../_images/drun.png" />
+</div>
+<p><em>Docker Workflow</em></p>
+</div>
+<div class="section" id="install-docker">
+<h2>Install Docker<a class="headerlink" href="#install-docker" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Windows - Installation of Docker on windows depends upon version of OS you have installed. Please refer <a class="reference external" href="[https://docs.docker.com/desktop/windows/install/](https://docs.docker.com/desktop/windows/install/)">this document</a></li>
+<li>Mac OS -  Depending upon which chipset of Mac are you using (Silicon or Intel) you can <a class="reference external" href="[https://docs.docker.com/desktop/mac/install/](https://docs.docker.com/desktop/windows/install/)">download installer</a>  and use it</li>
+<li>Linux - Depending upon linux distribution and architecture, you can <a class="reference external" href="https://docs.docker.com/engine/install/#server)">follow steps</a></li>
+</ul>
+<p>If you are on MacOS or Windows, click on docker application to turn it on, you will see something like this in the notification bar</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/dockrun.png"><img alt="../_images/dockrun.png" src="../_images/dockrun.png" style="width: 155.4px; height: 227.4px;" /></a>
+</div>
+<p><strong>Docker Running</strong></p>
+<p>Confirm Docker installation by opening Terminal of Linux/MacOS or Docker command prompt on windows and type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+<p>and confirm if you get version</p>
+<div class="figure">
+<img alt="../_images/dockterminal.png" src="../_images/dockterminal.png" />
+</div>
+<p><strong>Docker Version confirmation in terminal</strong></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+            <li class="right" style="margin-right: 10px">
+              <a href="../genindex.html" title="General Index"
+                 accesskey="I">index</a></li>
+            <li class="right" >
+              <a href="../py-modindex.html" title="Python Module Index"
+                 >modules</a> |</li>
+            <li class="right" >
+              <a href="create-dockerfile.html" title="Creating Dockerfile"
+                 accesskey="N">next</a> |</li>
+            <li class="right" >
+              <a href="index.html" title="Introduction to docker and docker-compose"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Basemap Training</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Introduction to docker and docker-compose</a> &#187;</li>
+        <li><a href="#">Introduction to Docker</a></li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, GeoSolutions.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,163 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Basemap OSM stack &#8212; Basemap Training</title>
+    <link rel="stylesheet" href="../_static/geosolutions.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Geoserver Docker image" href="gs-docker.html" />
+    <link rel="prev" title="Installing and Running the basemap OSM Stack" href="index.html" />
+    
+
+  </head><body>
+    <div class="header">
+        <div class="wrap">
+			
+            <div class="logo">
+			<a href="http://www.geosolutionsgroup.com/"><img src="../_static/img/geosolutions.png" alt="GeoSolutions" /></a>
+			<div class="social-container"> 
+				<ul id="social">
+					<li><a href="https://twitter.com/geosolutions_it/" id="twitter">Twitter</a></li>
+				</ul>
+			</div>
+			</div>
+					
+            <h2 class="docstitle"><a href="../index.html">Basemap Training</a></h2>
+			
+        </div>
+    </div>
+
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Basemap OSM stack</a><ul>
+<li><a class="reference internal" href="#basemap-osm-architecture">Basemap OSM architecture</a></li>
+<li><a class="reference internal" href="#using-basemap-repository">Using basemap repository</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Installing and Running the basemap OSM Stack</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gs-docker.html"
+                        title="next chapter">Geoserver Docker image</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/gsosm/bm-stack.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-basemap.bm-stack"></span><div class="section" id="basemap-osm-stack">
+<span id="basemap-bm-stack"></span><h1>Basemap OSM stack<a class="headerlink" href="#basemap-osm-stack" title="Permalink to this headline">¶</a></h1>
+<p>Basemap OSM stack consists of already available open source technologies which makes it scalable, robust, user friendly.</p>
+<div class="section" id="basemap-osm-architecture">
+<h2>Basemap OSM architecture<a class="headerlink" href="#basemap-osm-architecture" title="Permalink to this headline">¶</a></h2>
+<p>Before building application, we’ll try to understand architecture of basemap OSM stack</p>
+<div class="figure">
+<img alt="../_images/arch.png" src="../_images/arch.png" />
+</div>
+<p>This image gives high level of understanding regarding how data flows in basemap.</p>
+<p>User’s request is directed to NGINX proxy which then goes to Production Geoserver (aka Slave Geoserver). Production geoserver can be a single Geoserver or cluster as well. All the data seen in Slave geoserver is replicated via Master geoserver, which is connected with PostGIS store. While doing <cite>make build</cite> we can specify the regions of data we are interested to see. ImpOSM plays vital role to take all that data from <em>.pbf</em> format and push it to PostGIS.
+All geoserver side changes that needs to be done (Adding layers, changing styles, etc.) must be done on master geoserver. Then using jenkins, user can replicate those changes to all available slave geoservers.
+Jenkins can also be used to seed/truncate caches. We’ll learn more about it in upcoming articles.</p>
+</div>
+<div class="section" id="using-basemap-repository">
+<h2>Using basemap repository<a class="headerlink" href="#using-basemap-repository" title="Permalink to this headline">¶</a></h2>
+<p>Once the <a class="reference external" href="https://github.com/geosolutions-it/basemaps">repository</a>  is cloned, it will have following file structure</p>
+<div class="figure">
+<img alt="../_images/folder.png" src="../_images/folder.png" />
+</div>
+<p>We need to work with <cite>Makefile</cite> in order to make any changes(e.g. edit countries list, add geoserver plugin,etc.) In the upcoming articles we’ll see what data can up edited in makefile of particular stack.</p>
+<p>To update the basemap OSM after making changes in makefile or to build the application first time use following command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p>This will download the geoserver, ImpOSM repositories and then build the docker image from scratch, while creating this docker image, you can specify certain variables in makefile to make custom changes in these images.
+This part takes lot of time depending upon internet connection and amount of data user is downloading.</p>
+<p>Once the build process is finished, user can start the basemap OSM by first defining <cite>DGID</cite> as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DGID=$(getent group docker | awk -F &#39;:&#39; &#39;{ print $3 }&#39;)
+</pre></div>
+</div>
+<p>and then starting the docker-compose file by using following command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>make -e DGID=$DGID start
+</pre></div>
+</div>
+<p>This will create the required network and spin up containers for all images. Once all containers are started you can visit several applications</p>
+<ol class="arabic simple">
+<li>localhost/backoffice = Master geoserver</li>
+<li>localhost/geoserver = slave geoserver</li>
+<li>localhost/jenkins = jenkins UI</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+            <li class="right" style="margin-right: 10px">
+              <a href="../genindex.html" title="General Index"
+                 accesskey="I">index</a></li>
+            <li class="right" >
+              <a href="../py-modindex.html" title="Python Module Index"
+                 >modules</a> |</li>
+            <li class="right" >
+              <a href="gs-docker.html" title="Geoserver Docker image"
+                 accesskey="N">next</a> |</li>
+            <li class="right" >
+              <a href="index.html" title="Installing and Running the basemap OSM Stack"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Basemap Training</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Installing and Running the basemap OSM Stack</a> &#187;</li>
+        <li><a href="#">Basemap OSM stack</a></li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, GeoSolutions.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>

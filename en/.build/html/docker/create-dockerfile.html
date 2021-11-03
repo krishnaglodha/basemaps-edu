@@ -1,0 +1,273 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Creating Dockerfile &#8212; Basemap Training</title>
+    <link rel="stylesheet" href="../_static/geosolutions.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Understanding Docker-Compose" href="docker-compose.html" />
+    <link rel="prev" title="Introduction to Docker" href="docker-intro.html" />
+    
+
+  </head><body>
+    <div class="header">
+        <div class="wrap">
+			
+            <div class="logo">
+			<a href="http://www.geosolutionsgroup.com/"><img src="../_static/img/geosolutions.png" alt="GeoSolutions" /></a>
+			<div class="social-container"> 
+				<ul id="social">
+					<li><a href="https://twitter.com/geosolutions_it/" id="twitter">Twitter</a></li>
+				</ul>
+			</div>
+			</div>
+					
+            <h2 class="docstitle"><a href="../index.html">Basemap Training</a></h2>
+			
+        </div>
+    </div>
+
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Creating Dockerfile</a><ul>
+<li><a class="reference internal" href="#use-existing-docker-images">Use existing docker images</a></li>
+<li><a class="reference internal" href="#id1">Creating Dockerfile</a></li>
+<li><a class="reference internal" href="#docker-volumes">Docker Volumes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="docker-intro.html"
+                        title="previous chapter">Introduction to Docker</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="docker-compose.html"
+                        title="next chapter">Understanding Docker-Compose</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/docker/create-dockerfile.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-basemap.create-dockerfile"></span><div class="section" id="creating-dockerfile">
+<span id="basemap-create-dockerfile"></span><h1>Creating Dockerfile<a class="headerlink" href="#creating-dockerfile" title="Permalink to this headline">¶</a></h1>
+<p>Dockerfile is a extension less file which holds information in <em>key:value</em> pair. It can be written using YAML or JSON structure.</p>
+<div class="section" id="use-existing-docker-images">
+<h2>Use existing docker images<a class="headerlink" href="#use-existing-docker-images" title="Permalink to this headline">¶</a></h2>
+<p>Before writing Dockerfile, we’ll try to understand how to access already available image</p>
+<div class="figure">
+<img alt="../_images/image_as_container.png" src="../_images/image_as_container.png" />
+</div>
+<p>This image gives high level of understanding regarding how docker works. We request image from either docker hub or from our local and then we create container from the image which it actually executed.</p>
+<p>e.g. to create a workable postgreSQL instance, we’ll be pulling replica of postgreSQL image available on docker hub and use it as container</p>
+<p>Head over to [hub.docker.com](<a class="reference external" href="http://hub.docker.com">http://hub.docker.com</a>) and search for postgreSQL</p>
+<div class="figure">
+<img alt="../_images/docker_search.png" src="../_images/docker_search.png" />
+</div>
+<p>click on the official image to open the page</p>
+<div class="figure">
+<img alt="../_images/docker_image.png" src="../_images/docker_image.png" />
+</div>
+<p>Here you can find all information along with the code to pull the image. Tags are referred to pull different versions of image . e.g. for PostgreSQL It can be 14.0,13.4,12.8, etc.</p>
+<p>Copy the pull code and paste in docker command prompt(Windows) or Terminal(Linux/MacOS)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">postgres</span><span class="p">:</span><span class="mf">13.4</span>
+</pre></div>
+</div>
+<p>If no tag is provided, docker will by default pull the latest image</p>
+<div class="figure">
+<img alt="../_images/postgres_pull.png" src="../_images/postgres_pull.png" />
+</div>
+<p>To run this image we can use following command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="n">some</span><span class="o">-</span><span class="n">postgres</span> <span class="o">-</span><span class="n">p</span> <span class="mi">5454</span><span class="p">:</span><span class="mi">5432</span> <span class="o">-</span><span class="n">e</span> <span class="n">POSTGRES_PASSWORD</span><span class="o">=</span><span class="n">mysecretpassword</span> <span class="o">-</span><span class="n">d</span> <span class="n">postgres</span><span class="p">:</span><span class="mf">13.4</span>
+</pre></div>
+</div>
+<p>Here is the break down of command</p>
+<p><strong>docker run</strong> - This command instructs docker server to run the container for given image name, generally docker server will look for the image in local storage, if not found, it will automatically pull image from Docker hub</p>
+<p><strong>-—name some-postgres -</strong> - - name indicated the name of docker container, in this case it is some-postgres</p>
+<p><strong>-p 5454:5432</strong> - -p represents port assignment, in this case port 5454 of computer is assigned to port 5432 of image. Which means the image has port 5432 which will be accessed via 5454 port of computer</p>
+<p><strong>-e POSTGRES_PASSWORD=mysecretpassword</strong> - -e represents environment variables that we can pass from command line which will be used while creating container</p>
+<p><strong>-d</strong> - it asks docker daemon to run the container in detached mode</p>
+<p>postgres:13.4 - name of image along with specific tag that  we are looking for (either locally or hosted)</p>
+<div class="figure">
+<img alt="../_images/run_image.png" src="../_images/run_image.png" />
+</div>
+<p>The long string <em>db11673b9f9f7661128696c82378345778d1a3199e863d92ea3c282295d888e9</em> is the ID of the running container.</p>
+<p>To see all running containers, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">ps</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/docker_ps.png" src="../_images/docker_ps.png" />
+</div>
+<p>here all the details we used to create container can be seen.</p>
+<p>To test whether container is running or not, you can use psql or tool such as pgAdmin with following details</p>
+<ul class="simple">
+<li>host - localhost</li>
+<li>Port - 5454</li>
+<li>user - postgres</li>
+<li>password - mysecretpassword</li>
+</ul>
+<p>You can use the container name to get more information about container</p>
+<p>To stop the container,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">stop</span> <span class="n">some</span><span class="o">-</span><span class="n">postgres</span>
+</pre></div>
+</div>
+<p>To start the container</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">start</span> <span class="n">some</span><span class="o">-</span><span class="n">postgres</span>
+</pre></div>
+</div>
+<p>To remove the container</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">kill</span> <span class="n">some</span><span class="o">-</span><span class="n">postgres</span>
+</pre></div>
+</div>
+<p>To get inside the OS of container</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">some</span><span class="o">-</span><span class="n">postgres</span> <span class="n">bash</span>
+</pre></div>
+</div>
+<p>using -it will open interactive terminal with bash command</p>
+</div>
+<div class="section" id="id1">
+<h2>Creating Dockerfile<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Dockerfile is a file having set of instructions to create customized docker image on top of docker base image.</p>
+<div class="figure">
+<img alt="../_images/docker_instruction.png" src="../_images/docker_instruction.png" />
+</div>
+<p>Dockerfile follows commands in YAML or JSON format. Each instructions we add is considered as a new layer and processed from top to bottom.
+The first parameter of Dockerfile should always be <cite>FROM</cite> which represents the base image name.
+e.g. ubuntu, debian, alpine, etc.
+It can also be software that is already built on top of such OS such as PostgreSQL, NGINX, Apache Tomcat, etc.</p>
+<p>We can add metadata about the dockerfile using <cite>LABEL</cite>
+e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LABEL</span> <span class="n">maintainer</span><span class="o">=</span><span class="s1">&#39;info@geosolutionsit.com&#39;</span>
+</pre></div>
+</div>
+<p>We can execute some commands while creating docker image using <cite>RUN</cite>
+e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>We can write multiple RUN commands in the dockerfile.</p>
+<p><cite>CMD</cite> in Dockerfile Instruction is used to execute a command once container is created successfully, There should be one CMD in a Dockerfile
+e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;/usr/sbin/apache2&quot;</span><span class="p">,</span> <span class="s2">&quot;-D&quot;</span><span class="p">,</span> <span class="s2">&quot;FOREGROUND&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><cite>EXPOSE</cite> defines the port that will be opened for communication by docker image
+e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EXPORT</span> <span class="mi">8080</span>
+</pre></div>
+</div>
+<p><cite>ENV</cite> in Dockerfile is used to create Environment Variables with key and value. which then can be referred while executing commands</p>
+<p><cite>COPY</cite> command takes 2 arguments, first location of file/folder on local system that needs to be copied, and second, location where it needs to be pasted
+e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COPY</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">project</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span>
+</pre></div>
+</div>
+<p><cite>ADD</cite> is similar to copy except using is, user can also download content from internet and paste in folder
+e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ADD</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">sourceforge</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">geoserver</span><span class="o">/</span><span class="n">files</span><span class="o">/</span><span class="n">GeoServer</span><span class="o">/</span><span class="mf">2.19.0</span><span class="o">/</span><span class="n">geoserver</span><span class="o">-</span><span class="mf">2.19.0</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="n">zip</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">geoserver</span>
+</pre></div>
+</div>
+<p><cite>VOLUME</cite> in Dockerfile is used to create or mount volume to docker container.</p>
+<p><cite>WORKDIR</cite> in Dockerfile is used to set the working directory inside docker container.</p>
+<p>Using all such instructions we can create a dockerfile.
+e.g. Let us create a docker to run NGINX</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">ubuntu</span><span class="p">:</span><span class="mf">18.04</span>
+<span class="n">LABEL</span> <span class="n">maintainer</span><span class="o">=</span><span class="s2">&quot;krishna.lodha@geosolutionsgroup.com&quot;</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">nginx</span>
+<span class="n">EXPOSE</span> <span class="mi">80</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;nginx&quot;</span> <span class="p">,</span><span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="s2">&quot;daemon off;&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/image_built.png" src="../_images/image_built.png" />
+</div>
+<p>Once the image is build, you can use it by executing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="n">my_nginx_container</span> <span class="o">-</span><span class="n">p80</span><span class="p">:</span><span class="mi">80</span> <span class="o">-</span><span class="n">d</span> <span class="n">custom_nginx</span>
+</pre></div>
+</div>
+<p>Open your browser and search localhost</p>
+<div class="figure">
+<img alt="../_images/nginx.png" src="../_images/nginx.png" />
+</div>
+</div>
+<div class="section" id="docker-volumes">
+<h2>Docker Volumes<a class="headerlink" href="#docker-volumes" title="Permalink to this headline">¶</a></h2>
+<p>Once the docker container is not active, it loses it’s data, thus it becomes unreliable in data persistance. Docker volumes are used for this reason, Volumes are stores in host system and then managed by Docker.
+Single Volume can be mounted on multiple containers</p>
+<p>To create new volume</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">volume</span> <span class="n">create</span> <span class="p">[</span><span class="n">volume_name</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+            <li class="right" style="margin-right: 10px">
+              <a href="../genindex.html" title="General Index"
+                 accesskey="I">index</a></li>
+            <li class="right" >
+              <a href="../py-modindex.html" title="Python Module Index"
+                 >modules</a> |</li>
+            <li class="right" >
+              <a href="docker-compose.html" title="Understanding Docker-Compose"
+                 accesskey="N">next</a> |</li>
+            <li class="right" >
+              <a href="docker-intro.html" title="Introduction to Docker"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Basemap Training</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Introduction to docker and docker-compose</a> &#187;</li>
+        <li><a href="#">Creating Dockerfile</a></li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, GeoSolutions.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>

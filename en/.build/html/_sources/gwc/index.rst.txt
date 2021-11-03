@@ -1,0 +1,25 @@
+.. module:: basemap.gwc
+   :synopsis: Introduction to GeoWebCache
+
+
+.. _basemap.gwc:
+
+Introduction to GeoWebCache
+================================
+
+This module is a brief walk through of the GeoWebCache in Geoserver.
+
+We'll have a look at different settings we can configure to improve the performance of  **Basemap** stack
+
+What you will learn
+-------------------
+
+In this section you will learn the following topics:
+
+.. toctree::
+   :maxdepth: 1 
+
+   Understanding GeoWebCache <gwc-intro>
+   GeoWebCache Configurations <gwc-config>
+
+  

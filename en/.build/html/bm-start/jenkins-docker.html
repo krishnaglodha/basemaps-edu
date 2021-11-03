@@ -1,0 +1,448 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Understanding Jenkins Docker &#8212; Basemap Training</title>
+    <link rel="stylesheet" href="../_static/geosolutions.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    
+
+  </head><body>
+    <div class="header">
+        <div class="wrap">
+			
+            <div class="logo">
+			<a href="http://www.geosolutionsgroup.com/"><img src="../_static/img/geosolutions.png" alt="GeoSolutions" /></a>
+			<div class="social-container"> 
+				<ul id="social">
+					<li><a href="https://twitter.com/geosolutions_it/" id="twitter">Twitter</a></li>
+				</ul>
+			</div>
+			</div>
+					
+            <h2 class="docstitle"><a href="../index.html">Basemap Training</a></h2>
+			
+        </div>
+    </div>
+
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Understanding Jenkins Docker</a><ul>
+<li><a class="reference internal" href="#jenkins-jobs-for-basemap-osm">Jenkins Jobs for basemap OSM</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/bm-start/jenkins-docker.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-basemap.jenkins-docker"></span><div class="section" id="understanding-jenkins-docker">
+<span id="basemap-jenkins-docker"></span><h1>Understanding Jenkins Docker<a class="headerlink" href="#understanding-jenkins-docker" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://www.jenkins.io/">Jenkins</a>  is an open source automation tool written in Java programming language that allows continuous integration. Jenkins makes it easier for developers to integrate the changes and obtain fresh build. It allows continuous delivery using various plugins designed for specific technologies e.g. GIT, Amazon EC2, etc.</p>
+<p>We’ll use <a class="reference external" href="https://registry.hub.docker.com/layers/jenkinsci/blueocean/1.24.4/images/sha256-ace30b2c5702fd4d500c4ab48595e3dd5797c9ebd2bf9f438f92f6f5a6639eaf?context=explore">this</a> docker image for jenkins
+In basemap OSM stack, jenkins allows seamless upgrade of slave geoservers based on changes done in master geoserver. Which makes it easy to first try on Master geoserver and once obtained satisfied results, then deploy it to slave geoservers.
+Apart from this jenkins is also used to make it easy to seed, reseed, truncate the <a class="reference external" href="https://docs.geoserver.org/stable/en/user/geowebcache/index.html">GeoWebCache</a> .
+Let us understand each job in more depth</p>
+<div class="section" id="jenkins-jobs-for-basemap-osm">
+<h2>Jenkins Jobs for basemap OSM<a class="headerlink" href="#jenkins-jobs-for-basemap-osm" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Promoting Geoserver Configurations</li>
+</ol>
+<p>Here whatever changes are made in Master geoserver (&lt;Base_URL&gt;/backoffice) can be promoted to all other slave geoservers</p>
+<div class="figure">
+<img alt="bm-start/img/jenkin-home.png" src="bm-start/img/jenkin-home.png" />
+</div>
+<p>Now let’s create a new Jenkins job to manage GeoServer configuration promotion. Click on the New Item button in the top left corner and create a new Job of type “Pipeline” assigning it a meaningful name:</p>
+<div class="figure">
+<img alt="bm-start/img/jen-gs-config.png" src="bm-start/img/jen-gs-config.png" />
+</div>
+<p>Add a description and check the “Discard old builds” option and set the “Max # of builds to keep” value to 10. Also check the “Do not allow concurrent builds” option:</p>
+<div class="figure">
+<img alt="bm-start/img/jen-gs-config-2.png" src="bm-start/img/jen-gs-config-2.png" />
+</div>
+<p>Scroll down till the Pipeline section and paste the following code, and then click on Save:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">pipeline</span> <span class="p">{</span>
+   <span class="n">agent</span> <span class="nb">any</span>
+   <span class="n">stages</span> <span class="p">{</span>
+   <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Versioning datadir&#39;</span><span class="p">)</span> <span class="p">{</span>
+       <span class="n">steps</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">One</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">steps</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">included</span> <span class="n">within</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">block</span><span class="o">.</span>
+           <span class="n">sh</span> <span class="n">returnStatus</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;#!/bin/bash</span>
+<span class="s1">           docker exec -t geoserver-master git config --global user.email &quot;jenkins@osmpmaps.com&quot;</span>
+<span class="s1">            docker exec -t geoserver-master git config --global user.name &quot;jenkins-osmpmaps&quot;</span>
+<span class="s1">    echo &quot;Versioning the new changes&quot;</span>
+<span class="s1">    docker exec -i geoserver-master bash -c </span><span class="se">\&#39;</span><span class="s1">cd /var/geoserver/datadir; git init; git add .; git commit -a --allow-empty-message -m &quot;&quot;</span><span class="se">\&#39;</span><span class="s1">&#39;&#39;&#39;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Backing up the datadir from geoserver-slave&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">steps</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">One</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">steps</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">included</span> <span class="n">within</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">block</span><span class="o">.</span>
+      <span class="n">sh</span> <span class="n">returnStdout</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;#!/bin/bash</span>
+<span class="s1">    #echo &quot;Checking the containers&quot;</span>
+<span class="s1">    #docker ps</span>
+<span class="s1">    echo &quot;=&gt; Backing up the datadir from the slave container...&quot;</span>
+<span class="s1">    docker exec -t geoserver-master mv /slave/datadir /slave/datadir.bak</span>
+<span class="s1">    echo &quot;...DONE&quot;&#39;&#39;&#39;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Syncing the datadir from master to slave&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">steps</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">One</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">steps</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">included</span> <span class="n">within</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">block</span><span class="o">.</span>
+      <span class="n">sh</span> <span class="n">returnStatus</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;#!/bin/bash</span>
+<span class="s1">      set -x</span>
+<span class="s1">    echo &quot;=&gt; Syncing the new datadir to the slave...&quot;</span>
+<span class="s1">    #docker exec -t geoserver-master cp -R /var/geoserver/datadir /slave/datadir</span>
+<span class="s1">      docker exec -t geoserver-master rsync -avz  /var/geoserver/datadir /slave/ --exclude=&quot;.git&quot;</span>
+<span class="s1">    echo &quot;...DONE&quot;</span>
+<span class="s1">    echo &quot;=&gt; Checking if they have the same content...&quot;</span>
+<span class="s1">    docker exec -t geoserver-master diff -q /var/geoserver/datadir /slave/datadir</span>
+<span class="s1">    echo &quot;...DONE&quot;&#39;&#39;&#39;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Fixing geoserver-slave environment&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">steps</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">One</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">steps</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">included</span> <span class="n">within</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">block</span><span class="o">.</span>
+      <span class="n">sh</span> <span class="n">returnStatus</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;#!/bin/bash</span>
+<span class="s1">    echo &quot;=&gt; Get Permissions back to root...&quot;</span>
+<span class="s1">    docker exec -t geoserver-slave chown -R root:root /var/geoserver/datadir</span>
+<span class="s1">    echo &quot;...DONE&quot;</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Restarting the Geoserver-Slave&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">steps</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">One</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">steps</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">included</span> <span class="n">within</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">block</span><span class="o">.</span>
+      <span class="n">sh</span> <span class="n">returnStatus</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;#!/bin/bash</span>
+<span class="s1">    echo &quot;Restart Geoserver-Slave&quot;</span>
+<span class="s1">    docker restart geoserver-slave&#39;&#39;&#39;</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
+
+  <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Testing the Results&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">steps</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">One</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">steps</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">included</span> <span class="n">within</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">block</span><span class="o">.</span>
+      <span class="n">sh</span> <span class="n">returnStatus</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;#!/bin/bash</span>
+<span class="s1">        sleep 30</span>
+<span class="s1">        docker exec -t geoserver-slave curl -I -s --retry-delay 1 --retry 60 -X GET &quot;http://localhost:8080/geoserver/wms?service=wms&amp;version=1.1.1&amp;request=GetCapabilities&quot;</span>
+<span class="s1">        echo &quot;testing capabilities&quot;</span>
+<span class="s1">        curl -I -s --retry-delay 1 --retry 60 -X GET &quot;http://geoserver:8080/geoserver/wms?service=wms&amp;version=1.1.1&amp;request=GetCapabilities&quot;</span>
+<span class="s1">        res=$?</span>
+<span class="s1">        if test &quot;$res&quot; != &quot;0&quot;; then</span>
+<span class="s1">           echo &quot;the Test failed with: $res&quot;</span>
+<span class="s1">        else</span>
+<span class="s1">           echo &quot;Everything is OK!!&quot;</span>
+<span class="s1">        fi&#39;&#39;&#39;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Cleaning the old datadir&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">steps</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">One</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">steps</span> <span class="n">need</span> <span class="n">to</span> <span class="n">be</span> <span class="n">included</span> <span class="n">within</span> <span class="n">the</span> <span class="n">steps</span> <span class="n">block</span><span class="o">.</span>
+      <span class="n">sh</span> <span class="n">returnStatus</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;&#39;&#39;#!/bin/bash</span>
+<span class="s1">        docker exec -t geoserver-slave rm -Rf /var/geoserver/datadir.bak&#39;&#39;&#39;</span>
+    <span class="p">}</span>
+       <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>}</p>
+<p>That’s it. The new job will be visible from the Jenkins home page.</p>
+<div class="figure">
+<img alt="bm-start/img/jen-gs-config-3.png" src="bm-start/img/jen-gs-config-3.png" />
+</div>
+<ol class="arabic simple" start="2">
+<li>GeoWebCache Cache Seed - Truncate</li>
+</ol>
+<p>We’re going to use this job to manage cached tiles (seed / truncate). Let’s create 2 more pipelines for the job:
+Create a new Freestyle job named “Cache Seed - Truncate”</p>
+<div class="figure">
+<img alt="bm-start/img/gwc-1.png" src="bm-start/img/gwc-1.png" />
+</div>
+<p>Enable the deletion of old builds with a limit of 10 and select  “This project is parameterized”. Then add the following parameters.
+Remember to update the IP address accordingly, to check the IP run following command on terminal</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">inspect</span> <span class="n">geoserver</span><span class="o">-</span><span class="n">master</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="bm-start/img/gwc-1.png" src="bm-start/img/gwc-1.png" />
+</div>
+<p>In the result you can find the IP of geoserver backoffice, similarly also find out IP of slave geoserver</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">inspect</span> <span class="n">geoserver</span><span class="o">-</span><span class="n">slave</span>
+</pre></div>
+</div>
+<p>Setup the options as following</p>
+<table border="1" class="colwidths-given docutils" id="id1">
+<caption><span class="caption-text">Jenkins URLs table</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="33%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Value</th>
+<th class="head">description</th>
+<th class="head">Trim the string</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>geoServerUrl</td>
+<td>Choice Parameter</td>
+<td><a class="reference external" href="http://172.16.36.105/backoffice">http://172.16.36.105/backoffice</a> ,http://172.16.36.105/geoserver</td>
+<td>example:  <a class="reference external" href="http://mygeoserver.com/geoserver">http://mygeoserver.com/geoserver</a></td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>operation</td>
+<td>Choice Parameter</td>
+<td>seed, reseed, truncate</td>
+<td>Operation to perform</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>layerName</td>
+<td>String</td>
+<td>osm:osm</td>
+<td>Name of the target Layerqualified with the Workspace name, e.g. osm:osm</td>
+<td>yes</td>
+</tr>
+<tr class="row-odd"><td>gridsetName</td>
+<td>String</td>
+<td>EPSG:3857</td>
+<td>Target Gridset Name</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td>bounds</td>
+<td>String</td>
+<td>-20026376.39 -20048966.10 20026376.39 20048966.10</td>
+<td>minX minY maxX maxY (example - 20026376.39 -20048966.10 20026376.39 20048966.10) Note: The unit of measure is defines by the projection. Could be lat-long or meters</td>
+<td>yes</td>
+</tr>
+<tr class="row-odd"><td>zoomStart</td>
+<td>String</td>
+<td>0</td>
+<td>Target start zoom level</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td>zoomEnd</td>
+<td>String</td>
+<td>5</td>
+<td>Target stop zoom level</td>
+<td>yes</td>
+</tr>
+<tr class="row-odd"><td>format</td>
+<td>String</td>
+<td>image/png</td>
+<td>Image format interested by the operation</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td>threadCount</td>
+<td>String</td>
+<td>1</td>
+<td>How many thread to spin up to carry on the operation</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Important Notes:</strong></p>
+<ul class="simple">
+<li><em>geoServerUrl</em> is a Choice Parameter that has two possible values, on per line. User a carriage return as to separate the backoffice and slaves URLs.</li>
+<li>The URLs set in the geoServerUrl must be reachable from the Jenkins docker container. In the example above I put the private IP address of the machine I am installing on. Please adapt to your environment.</li>
+<li><em>operation</em> is also  a Choice Parameter with three possible values. One per line. User a carriage return as to separate the backoffice and slaves URLs.</li>
+</ul>
+<p><strong>Build Environment</strong></p>
+<p>In the Build Environment section we’re going to add credentials to be used by Jenkins to authenticate against geoserver. Select “Use secret text(s) or file(s)” and add a Username and Password (separated) credentials:</p>
+<div class="figure">
+<img alt="bm-start/img/gwc-2.png" src="bm-start/img/gwc-2.png" />
+</div>
+<p>For the username variable name use “gsUsername” and for the password variable name “gsPassword”</p>
+<div class="figure">
+<img alt="bm-start/img/gwc-3.png" src="bm-start/img/gwc-3.png" />
+</div>
+<p>Then click on “Add” to add the credentials in Jenkins</p>
+<div class="figure">
+<img alt="bm-start/img/gwc-4.png" src="bm-start/img/gwc-4.png" />
+</div>
+<p>Add a username and password secret similar to the one below. For the ID field use geoserverUserPass</p>
+<div class="figure">
+<img alt="bm-start/img/gwc-5.png" src="bm-start/img/gwc-5.png" />
+</div>
+<p><strong>Build</strong></p>
+<p>In the Build section of the job, add an Execute Shell step with the following content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+set -e
+if [ &quot;$DEBUG&quot; == &#39;true&#39; ]; then
+echo &quot;### Debug enabled&quot;
+echo &quot;### Printing environment&quot;
+env
+set -x
+fi
+geoServerUrl=${geoServerUrl}/gwc/rest
+$JENKINS_HOME/gwc/gwc.sh \
+$operation \
+$layerName   \
+$gridsetName \
+-b $bounds \
+-zs $zoomStart \
+-ze $zoomEnd   \
+-f $format \
+-t $threadCount \
+-a &quot;${gsUsername}:$gsPassword&quot; \
+-u $geoServerUrl \
+-v
+</pre></div>
+</div>
+<p>Finally, save the job.</p>
+<ol class="arabic simple" start="3">
+<li>GeoWebCache -  Cache Masstruncate</li>
+</ol>
+<p>Now create a second job, similar to the previous one but with fewer parameters and a slightly different build command, name it Cache Masstruncate</p>
+<table border="1" class="colwidths-given docutils" id="id2">
+<caption><span class="caption-text">Masstruncate Job Parameters</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="33%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Value</th>
+<th class="head">description</th>
+<th class="head">Trim the string</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>geoServerUrl</td>
+<td>Choice Parameter</td>
+<td><a class="reference external" href="http://172.16.36.105/backoffice">http://172.16.36.105/backoffice</a> ,http://172.16.36.105/geoserver</td>
+<td>example:  <a class="reference external" href="http://mygeoserver.com/geoserver">http://mygeoserver.com/geoserver</a></td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>layerName</td>
+<td>String</td>
+<td>osm:osm</td>
+<td>Name of the target Layerqualified with the Workspace name, e.g. osm:osm</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td>DEBUG</td>
+<td>Boolean</td>
+<td>false</td>
+<td>Enable debugging? Disabled by default</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Important Notes:</strong></p>
+<ul class="simple">
+<li>geoServerUrl is a Choice Parameter that has two possible values, on per line. User a carriage return as to separate the backoffice and slaves URLs.</li>
+</ul>
+<p>The URLs set in the geoServerUrl must be reachable from the Jenkins docker container. In the example above I put the private IP address of the machine I am installing on. Please adapt to your environment.</p>
+<p><strong>Build Environment</strong></p>
+<p>In the Build Environment section we’re going to add credentials to be used by Jenkins to authenticate against geoserver. You can use the ones defined for the previous Job.Build
+In the Build section of the job, add an Execute Shell step with the following content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+set -e
+if [ &quot;$DEBUG&quot; == &#39;true&#39; ]; then
+echo &quot;### Debug enabled&quot;
+echo &quot;### Printing environment&quot;
+env
+set -x
+fi
+geoServerUrl=${geoServerUrl}/gwc/rest
+$JENKINS_HOME/gwc/gwc.sh \
+masstruncate \
+$layerName \
+-a &quot;${gsUsername}:$gsPassword&quot; \
+-u $geoServerUrl \
+-v
+</pre></div>
+</div>
+<p>Finally, save the job.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+            <li class="right" style="margin-right: 10px">
+              <a href="../genindex.html" title="General Index"
+                 accesskey="I">index</a></li>
+            <li class="right" >
+              <a href="../py-modindex.html" title="Python Module Index"
+                 >modules</a> |</li>
+        <li><a href="../index.html">Basemap Training</a> &#187;</li>
+        <li><a href="#">Understanding Jenkins Docker</a></li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, GeoSolutions.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# GeoServer documentation build configuration file, created by
+# Basemap documentation build configuration file, created by
 # sphinx-quickstart on Wed Sep  9 13:36:21 2009.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -39,7 +39,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'GeoServer'
+project = u'Basemap'
 copyright = u'2020, GeoSolutions'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -105,7 +105,7 @@ html_theme_path = ['themes']
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = "GeoServer Training"
+html_title = "Basemap Training"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -160,7 +160,7 @@ html_title = "GeoServer Training"
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'GeoServerdoc'
+htmlhelp_basename = 'Basemapdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -174,7 +174,7 @@ htmlhelp_basename = 'GeoServerdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'GeoServer.tex', u'GeoServer Training',
+  ('index', 'Basemap.tex', u'Basemap Training',
    u'GeoSolutions', 'manual'),
 ]
 
@@ -211,7 +211,7 @@ tab_width=2
 # would mean that specific document would be compressed
 # regardless of the global pdf_compressed setting.
 pdf_documents = [
-('index', u'GeoServer Training', u'GeoServer Training', u'GeoSolutions'),
+('index', u'Basemap Training', u'Basemap Training', u'GeoSolutions'),
 ]
 # A comma-separated list of custom stylesheets. Example:
 pdf_stylesheets = ['sphinx','kerning','a4']

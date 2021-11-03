@@ -1,0 +1,300 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Introduction to GeoWebCache &#8212; Basemap Training</title>
+    <link rel="stylesheet" href="../_static/geosolutions.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Introduction to GeoWebCache" href="index.html" />
+    
+
+  </head><body>
+    <div class="header">
+        <div class="wrap">
+			
+            <div class="logo">
+			<a href="http://www.geosolutionsgroup.com/"><img src="../_static/img/geosolutions.png" alt="GeoSolutions" /></a>
+			<div class="social-container"> 
+				<ul id="social">
+					<li><a href="https://twitter.com/geosolutions_it/" id="twitter">Twitter</a></li>
+				</ul>
+			</div>
+			</div>
+					
+            <h2 class="docstitle"><a href="../index.html">Basemap Training</a></h2>
+			
+        </div>
+    </div>
+
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction to GeoWebCache</a><ul>
+<li><a class="reference internal" href="#enable-direct-wms-integration">Enable direct WMS integration</a></li>
+<li><a class="reference internal" href="#default-caching-options">Default caching options</a></li>
+<li><a class="reference internal" href="#disk-quota">Disk quota</a></li>
+<li><a class="reference internal" href="#links">Links</a></li>
+<li><a class="reference internal" href="#tile-layers">Tile layers</a></li>
+<li><a class="reference internal" href="#viewing">Viewing</a></li>
+<li><a class="reference internal" href="#geowebcache-endpoint-url">GeoWebCache endpoint URL</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Introduction to GeoWebCache</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/gwc/gwc-intro.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-gwc.gwc-intro"></span><div class="section" id="introduction-to-geowebcache">
+<span id="gwc-gwc-intro"></span><h1>Introduction to GeoWebCache<a class="headerlink" href="#introduction-to-geowebcache" title="Permalink to this headline">¶</a></h1>
+<p>The GeoWebCache Settings page, in the Server menu in the Geoserver web interface, shows some configuration options for GeoWebCache, a tile server that comes embedded by default inside GeoServer.</p>
+<ol class="arabic">
+<li><p class="first">Navigate to the GeoServer <a class="reference external" href="http://localhost:8083/geoserver/web/">Welcome Page</a>.</p>
+</li>
+<li><p class="first">Click on <span class="guilabel">GeoWebCache</span> link located in the Settings section (Caching Defaults).</p>
+<div class="figure align-center">
+<img alt="../_images/gwcsettings1.png" src="../_images/gwcsettings1.png" />
+</div>
+</li>
+<li><p class="first">Next, you will see the results of <span class="guilabel">GeoWebCache Settings</span> page.</p>
+<div class="figure align-center">
+<img alt="../_images/gwcsettings2.png" src="../_images/gwcsettings2.png" />
+</div>
+</li>
+</ol>
+<div class="section" id="enable-direct-wms-integration">
+<h2>Enable direct WMS integration<a class="headerlink" href="#enable-direct-wms-integration" title="Permalink to this headline">¶</a></h2>
+<p>GeoWebCache acts as a proxy between GeoServer and map client.  By default, GeoWebCache has a separate endpoint from the GeoServer WMS.</p>
+<p>However, often clients are set up to make a tiled request to the GeoServer WMS, and those tiles often happen to match a well recognized tile hierarchy (the Google/OpenStreetMap one for example).
+Enabling direct WMS integration allows WMS requests that match a tiling structure recognized by GWC to be cached and served by GWC directly, thus speeding up the requests.</p>
+</div>
+<div class="section" id="default-caching-options">
+<h2>Default caching options<a class="headerlink" href="#default-caching-options" title="Permalink to this headline">¶</a></h2>
+<p>The default caching options influence how GeoWebCache caches the layers that are being configured in GeoServer.
+In GeoServer 2.1.x series the configuration applies to all layers, from the 2.2.x and above series it’s also possible to customize the settings on a per layer basis.</p>
+<p>The meta tiling factor influences what kind of WMS request GWC uses to build the tile cache (by default, a 4x4 block that is then sliced).
+The gutter adds a number of extra row/column of pixels in the WMS request to make sure the tile do not get cut/partial symbols (in GeoServer this is often
+unnecessary, but might become critical if the size of a symbol is attribute driven and thus cannot be determined by inspecting the SLD only).</p>
+<p>The formats being cached influence what GWC is actually going to cache on disk and serve.</p>
+</div>
+<div class="section" id="disk-quota">
+<h2>Disk quota<a class="headerlink" href="#disk-quota" title="Permalink to this headline">¶</a></h2>
+<p>This section manages the disk usage for tiles saved with GeoWebCache.</p>
+<blockquote>
+<div><div class="figure align-center">
+<img alt="../_images/gwcsettings21.png" src="../_images/gwcsettings21.png" />
+</div>
+</div></blockquote>
+<p>By default, disk usage with GeoWebCache is unbounded, regardless of integration with the GeoServer WMS, so every tile served from GeoWebCache will be stored in the cache directory (typically the <code class="file docutils literal notranslate"><span class="pre">gwc</span></code> directory inside the data directory). Setting a disk quota allows disk usage to be constrained, which might be critical when serving large areas that would result in several terabytes worth of tile cache on disk.</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="30%" />
+<col width="15%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Option</th>
+<th class="head">Default value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><span class="guilabel">Enable Disk Quota limits</span></td>
+<td>Off</td>
+<td>Turns on the disk quota.  When disabled, the cache directory will grow unbounded.  When enabled, the disk quota will be set according to the options below.</td>
+</tr>
+<tr class="row-odd"><td><span class="guilabel">Compute cache usage based on a disk block size of</span></td>
+<td>4096 bytes</td>
+<td>This field should be set equal to the disk block size of the storage medium where the cache is located.</td>
+</tr>
+<tr class="row-even"><td><span class="guilabel">Check if the cache disk quota is exceeded every</span></td>
+<td>10 seconds</td>
+<td>Time interval at which the cache is polled.  Smaller values (more frequent polling) will slightly increase disk activity, but larger values (less frequent polling) might cause the disk quota to be temporarily exceeded.</td>
+</tr>
+<tr class="row-odd"><td><span class="guilabel">Set maximum tile cache size</span></td>
+<td>100 MiB (Megabytes)</td>
+<td>The maximum size for the cache.  When this value is exceeded and the cache is polled, tiles will be removed according to the policy choice listed below.  Note that the unit options are <strong>megabytes</strong> (approx. 1.05MB), <strong>gigabytes</strong> (approx. 1.07GB), and <strong>terabytes</strong> (approx. 1.10TB).</td>
+</tr>
+<tr class="row-even"><td><span class="guilabel">When forcing disk quota limits, remove first tiles that are</span></td>
+<td>Least Frequently Used</td>
+<td>Sets the policy for tile removal when the disk quota is exceeded.  Options are <strong>Least Frequently Used</strong> (removes tiles based on how often the tile was accessed) or <strong>Least Recently Used</strong> (removes tiles based on date of last access).</td>
+</tr>
+<tr class="row-odd"><td><span class="guilabel">Disk quota store type</span></td>
+<td>In process database (H2)</td>
+<td>By default using H2 database to store disk quotas, this options allows to configure also an external DB (useful for clustered systems). Options are <strong>In process database (H2)</strong> (uses a local H2 db on filesystem) or <strong>External database</strong> (uses an external DBMS).</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is not currently possible to set a disk quota for the entire GeoWebCache storage system. It is also not possible to mix LFU and LRU on a single layer. See the <a class="reference external" href="https://www.geowebcache.org/docs/current/index.html">GeoWebCache documentation</a> for more about disk quotas.</p>
+</div>
+<p>When finished making changes, click <span class="guilabel">Submit</span>.</p>
+<p>This section also shows how much disk space is being used compared to the disk quota size, as well as the last time (if any) the quota was reached.</p>
+</div>
+<div class="section" id="links">
+<h2>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h2>
+<p>On top of the Caching Defaults page there is a link to the embedded GWC homepage (containing runtime statistics and status updates)</p>
+<blockquote>
+<div><div class="figure align-center">
+<img alt="../_images/gwc0.png" src="../_images/gwc0.png" />
+</div>
+</div></blockquote>
+<p>The link above allows to access the integrated GWC home page directly</p>
+<blockquote>
+<div><div class="figure align-center">
+<img alt="../_images/gwc1.jpg" src="../_images/gwc1.jpg" />
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="tile-layers">
+<h2>Tile layers<a class="headerlink" href="#tile-layers" title="Permalink to this headline">¶</a></h2>
+<p>This section allows to manage the cached layers published by the integrated GeoWebCache:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">The <span class="guilabel">Tile Layers</span> page is where you can view configured layers, reload the configuration (when changing settings or adding new layers), and seed/refresh the existing cache on a per-layer basis.</p>
+<div class="figure align-center">
+<img alt="../_images/gwc2.jpg" src="../_images/gwc2.jpg" />
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic">
+<li><p class="first">In the <span class="guilabel">Tile Layers</span> page scroll down to visualize the <span class="guilabel">boulder</span> layer and select the <span class="guilabel">EPSG:900913 / png</span> from the <strong>Preview</strong> combobox</p>
+<div class="figure align-center">
+<img alt="../_images/gwc3.png" src="../_images/gwc3.png" />
+</div>
+</li>
+<li><p class="first"><span class="guilabel">Zoom In</span> on the map and after <span class="guilabel">zoom out</span> in order to check the responsively of the layer rendering.</p>
+<div class="figure align-center">
+<img alt="../_images/gwc5.png" src="../_images/gwc5.png" />
+</div>
+</li>
+<li><p class="first">From this page is also possible to directly access the layer configuration, check the available disk quota (if present) and the tiles dimension, but also manage the cache seeding.</p>
+<div class="figure align-center">
+<img alt="../_images/gwc4.png" src="../_images/gwc4.png" />
+</div>
+</li>
+<li><p class="first">In the <span class="guilabel">Tile Layers</span> page, scroll down to visualize the <span class="guilabel">boulder</span> layer and select the <span class="guilabel">seed/truncate</span> link in order to directly access to the GWC seeding form.</p>
+<div class="figure align-center">
+<img alt="../_images/gwc6.png" src="../_images/gwc6.png" />
+</div>
+</li>
+<li><p class="first">Try to seed/reseed some zoom levels. As an example, try same parameters values as shown in following image (no more than level 9 for the exercise otherwise it will take too much time)</p>
+<div class="figure align-center">
+<img alt="../_images/gwc7.png" src="../_images/gwc7.png" />
+</div>
+</li>
+<li><p class="first">Check back from the <span class="guilabel">Tile Layers</span> page that the dimension of the tiles has changed</p>
+<div class="figure align-center">
+<img alt="../_images/gwc8.png" src="../_images/gwc8.png" />
+</div>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You will see the updated tile dimension <strong>ONLY</strong> when the Disk Quota is enabled, always 0B will be displayed instead. In that case just check directly the GWC data dir.</p>
+</div>
+</div>
+<div class="section" id="viewing">
+<h2>Viewing<a class="headerlink" href="#viewing" title="Permalink to this headline">¶</a></h2>
+<p>To view the GeoWebCache demo page, append <code class="docutils literal notranslate"><span class="pre">/gwc/demo</span></code> to the address of your GeoServer instance.  For example, if your GeoServer is at the following address:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8083</span><span class="o">/</span><span class="n">geoserver</span>
+</pre></div>
+</div>
+<p>The GeoWebCache demo page is accessible here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8083</span><span class="o">/</span><span class="n">geoserver</span><span class="o">/</span><span class="n">gwc</span><span class="o">/</span><span class="n">demo</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="geowebcache-endpoint-url">
+<h2>GeoWebCache endpoint URL<a class="headerlink" href="#geowebcache-endpoint-url" title="Permalink to this headline">¶</a></h2>
+<p>When not using direct integration, you can point your client directly to GeoWebCache.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">GeoWebCache is not a true WMS and so the following explanation is an oversimplification.</p>
+</div>
+<p>To direct your client to GeoWebCache (and thus receive cached tiles) you need to change the WMS URL.</p>
+<p>If your application requests WMS tiles from GeoServer at this URL:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">geoserver</span><span class="o">/</span><span class="n">wms</span>
+</pre></div>
+</div>
+<p>Then, you can invoke the GeoWebCache WMS instead at this URL:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">geoserver</span><span class="o">/</span><span class="n">gwc</span><span class="o">/</span><span class="n">service</span><span class="o">/</span><span class="n">wms</span>
+</pre></div>
+</div>
+<p>In other words, add <code class="docutils literal notranslate"><span class="pre">/gwc/service/wms</span></code> in between the path to your GeoServer instance and the WMS call.</p>
+<p>As soon as tiles are requested through GeoWebCache, it automatically starts saving them.  This means that initial requests for tiles will not be accelerated since GeoServer will still need to generate the tiles.  To automate this process of requesting tiles, you can <strong>seed</strong> the cache.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+            <li class="right" style="margin-right: 10px">
+              <a href="../genindex.html" title="General Index"
+                 accesskey="I">index</a></li>
+            <li class="right" >
+              <a href="../py-modindex.html" title="Python Module Index"
+                 >modules</a> |</li>
+            <li class="right" >
+              <a href="index.html" title="Introduction to GeoWebCache"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Basemap Training</a> &#187;</li>
+          <li><a href="index.html" accesskey="U">Introduction to GeoWebCache</a> &#187;</li>
+        <li><a href="#">Introduction to GeoWebCache</a></li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, GeoSolutions.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>
